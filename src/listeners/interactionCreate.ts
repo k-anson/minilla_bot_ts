@@ -1,10 +1,14 @@
-import { BaseCommandInteraction, Client, Interaction, ModalSubmitInteraction } from "discord.js"
+import { BaseCommandInteraction, Client, Interaction, ModalSubmitInteraction, SelectMenuInteraction } from "discord.js"
+import selectMenus from "../selectMenus"
 import commands from "../commands"
 
 export default (client: Client): void => {
   client.on("interactionCreate", async (interaction: Interaction) => {
-    if (interaction.isModalSubmit()) {
-      await handleModalSubmit(client, interaction)
+    // if (interaction.isModalSubmit()) {
+    //   await handleModalSubmit(client, interaction)
+    // }
+    if (interaction.isSelectMenu()) {
+      await handleSelectMenu(client, interaction)
     }
     if (interaction.isCommand() || interaction.isContextMenu()) {
       await handleSlashCommand(client, interaction)
@@ -20,6 +24,16 @@ const handleModalSubmit = async (client: Client, interaction: ModalSubmitInterac
   // }
 
   // modalSubmit.run(client, interaction)
+}
+
+const handleSelectMenu = async (client: Client, interaction: SelectMenuInteraction): Promise<void> => {
+  const selectMenu = selectMenus.find(selectMenu => selectMenu.data.customId === interaction.customId)
+  if (!selectMenu) {
+    interaction.reply({ content: "An error has occured"})
+    return
+  }
+
+  selectMenu.run(client, interaction)
 }
 
 const handleSlashCommand = async (client: Client, interaction: BaseCommandInteraction): Promise<void> => {

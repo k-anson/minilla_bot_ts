@@ -1,11 +1,11 @@
-import { Command } from "../Command"
+import { Command } from "../types/Command"
 
 import ping from "./ping"
-import roleModal from "./roleModal"
+import roleSelectMenu from "./roleSelectMenu"
 
 const commands: Command[] = [
   ping,
-  roleModal
+  roleSelectMenu
 ]
 
 export default commands
