@@ -4,7 +4,7 @@ import commands from "./commands"
 
 export default async (client: Discord.Client) => {
   const GUILD_ID = process.env.GUILD_ID
-  const FORCE_SYNCHRONIZE = process.env.FORCE_SYNCHRONIZE
+  const FORCE_COMMAND_UPDATE = process.env.FORCE_COMMAND_UPDATE
 
   const currCommands = await client.application?.commands.fetch({ guildId: GUILD_ID})
 
@@ -36,8 +36,8 @@ export default async (client: Discord.Client) => {
     const newCommand = updatedCommand
     const previousCommand = currCommands?.find((c) => c.name === updatedCommand.data.name)
     let modified = false
-    if (FORCE_SYNCHRONIZE) {
-      console.log("Force synchronization toggled")
+    if (FORCE_COMMAND_UPDATE) {
+      console.log("Forcing command updates...")
       modified = true
     } else {
       if (previousCommand?.description !== newCommand.data.description) modified = true
